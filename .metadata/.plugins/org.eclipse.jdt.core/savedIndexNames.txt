@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+/home/dyeremiia/Documents/University/year_3/MTR/.metadata/.plugins/org.eclipse.jdt.core
+1865797976.index
+776669869.index
+1267904578.index

@@ -1,0 +1,98 @@
+package main.java;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class DataGetter {	
+	// thresholds
+	private static final double PROBABILITY_THRESHOLD_UP = 1;
+	private static final double PROBABILITY_THRESHOLD_DOWN = 0;
+	
+	// default values
+	private static final Map<String, Double> PROBABILITIES_DEFAULT = Map.of("sunny", 0.7, "rainy", 0.3);
+	private static final List<String> RESULTS_DEFAULT = Arrays.asList("Home", "Forest");
+	
+	public List<String> getResults() {
+		Scanner scanner = new Scanner(System.in);
+		
+		List<String> results = new ArrayList<>();
+		String inputRow;
+		System.out.println("Enter possible results\n Just press enter to end entering.\n If didn't enter nothing will apply default results.");
+		while(true) {
+			inputRow = scanner.next();
+			if (inputRow == "") {
+				break;
+			}
+			results.add(inputRow);
+		}
+		
+		scanner.close();
+		
+		if (results.size() < 2) {
+			return RESULTS_DEFAULT;
+		}
+		
+		return results;
+	}
+	
+	public Map<String, Double> getProbabilities() {
+		Scanner scanner = new Scanner(System.in);
+		
+		Map<String, Double> probabilities = new HashMap<>();
+		
+		try {
+			checkProbabilities(probabilities);
+		} catch (IllegalStateException e) {
+			System.err.println("Sum of probabilities must be equal to " + PROBABILITY_THRESHOLD_UP + ". Try again.");
+			probabilities = getProbabilities();
+		} finally {
+			scanner.close();
+		}
+		
+		if(probabilities.size() < 2) {
+			return PROBABILITIES_DEFAULT;
+		}
+			
+		return probabilities;
+	}
+	
+	private double getProbability(Scanner scanner, String text) {
+		double probability = 0;
+		System.out.printf(text);
+		
+		try {
+			probability = scanner.nextDouble();
+			checkProbability(probability);
+		} catch (InputMismatchException e) {
+			System.err.println("Invalid number. It must be double. Try again.");
+			probability = getProbability(scanner, text);
+		} catch (IllegalArgumentException e) {
+			System.err.printf("Invalid number. It must be in the range (%d,%d). Try again.%n", PROBABILITY_THRESHOLD_DOWN, PROBABILITY_THRESHOLD_UP);
+			probability = getProbability(scanner, text);
+		} 
+		
+		return probability;
+	}
+	
+	private void checkProbabilities(double[] probabilities) {
+		double sum = 0;
+		for(double element : probabilities) {
+			sum += element;			
+		}
+		if (sum != PROBABILITY_THRESHOLD_UP) {
+			throw new IllegalStateException();
+		}
+	}
+	
+	private void checkProbability(double probability) {
+		if(probability <= PROBABILITY_THRESHOLD_DOWN || probability >= PROBABILITY_THRESHOLD_UP) {
+			throw new IllegalArgumentException();
+		}
+	}
+	
+}

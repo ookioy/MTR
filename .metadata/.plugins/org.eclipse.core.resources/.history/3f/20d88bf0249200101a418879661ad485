@@ -1,0 +1,92 @@
+package main.java;
+
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+
+public class DataGetter {	
+	// thresholds
+	private static final double PROBABILITY_THRESHOLD_UP = 1;
+	private static final double PROBABILITY_THRESHOLD_DOWN = 0;
+	
+	// default values
+	private static final HashMap<String, Double> PROBABILITIES_DEFAULT = null;
+	private static final List<String> RESULTS_DEFAULT = {
+		RESULTS_DEFAULT.add("Home");
+		RESULTS_DEFAULT.add("Forest");
+	};
+	
+	public DataGetter() {
+		PROBABILITIES_DEFAULT.put("sunny", 0.7);
+		PROBABILITIES_DEFAULT.put("rainy", 0.3);
+		
+		
+	}
+	
+	@Override
+	public void finalize() {
+		scanner.close();
+	}
+	
+	public List<String> getResults() {
+		System.out.print("Enter count of results: ");
+		int countOfResults = scanner.nextInt();		
+		
+		String[] results = new String[];
+		for(String row : results) {
+			row = scanner.next();
+		}
+		return results;
+	}
+	
+	public HashMap<String, Double> getProbabilities() {
+		double[] probabilities = new double[COUNT_OF_POSIBILITIES];
+		for(int i = 0; i < COUNT_OF_POSIBILITIES; i++) {
+			probabilities[i] = getProbability("Enter probability " + (i + 1));
+		}
+		try {
+			checkProbabilities(probabilities);
+		} catch (IllegalStateException e) {
+			System.err.println("Sum of probabilities must be equal to " + PROBABILITY_THRESHOLD_UP + ". Try again.");
+			probabilities = getProbabilities();
+		}
+			
+		return probabilities;
+	}
+	
+	private double getProbability(String text) {
+		double probability = 0;
+		System.out.printf(text);
+		
+		try {
+			probability = scanner.nextDouble();
+			checkProbability(probability);
+		} catch (InputMismatchException e) {
+			System.err.println("Invalid number. It must be double. Try again.");
+			probability = getProbability(text);
+		} catch (IllegalArgumentException e) {
+			System.err.printf("Invalid number. It must be in the range (%d,%d). Try again.%n", PROBABILITY_THRESHOLD_DOWN, PROBABILITY_THRESHOLD_UP);
+			probability = getProbability(text);
+		} 
+		
+		return probability;
+	}
+	
+	private void checkProbabilities(double[] probabilities) {
+		double sum = 0;
+		for(double element : probabilities) {
+			sum += element;			
+		}
+		if (sum != PROBABILITY_THRESHOLD_UP) {
+			throw new IllegalStateException();
+		}
+	}
+	
+	private void checkProbability(double probability) {
+		if(probability <= PROBABILITY_THRESHOLD_DOWN || probability >= PROBABILITY_THRESHOLD_UP) {
+			throw new IllegalArgumentException();
+		}
+	}
+	
+}

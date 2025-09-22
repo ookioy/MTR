@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+public class DecisionHelper {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // 1. Можливі стани
+        String[] states = {"Дощ", "Сонце"};
+        double[] probabilities = {0.2, 0.8}; // Ймовірності станів
+
+        // 2. Можливі дії
+        String[] actions = {"Сидіти вдома", "Піти в ліс"};
+
+        // 3. Оцінки користувача для кожної пари (стан, дія)
+        double[][] utilities = new double[actions.length][states.length];
+
+        System.out.println("Оцініть, наскільки ви задоволені (від -10 до 10) у кожній ситуації:");
+        for (int i = 0; i < actions.length; i++) {
+            for (int j = 0; j < states.length; j++) {
+                System.out.print("Якщо буде '" + states[j] + "' і ви вирішите '" + actions[i] + "': ");
+                utilities[i][j] = sc.nextDouble();
+            }
+        }
+
+        // 4. Розрахунок очікуваної цінності для кожної дії
+        double bestValue = Double.NEGATIVE_INFINITY;
+        String bestAction = "";
+        for (int i = 0; i < actions.length; i++) {
+            double expectedValue = 0;
+            for (int j = 0; j < states.length; j++) {
+                expectedValue += probabilities[j] * utilities[i][j];
+            }
+            System.out.printf("Очікувана цінність дії '%s': %.2f\n", actions[i], expectedValue);
+
+            if (expectedValue > bestValue) {
+                bestValue = expectedValue;
+                bestAction = actions[i];
+            }
+        }
+
+        // 5. Вивід оптимальної дії
+        System.out.println("\nНайоптимальніший вибір: " + bestAction);
+    }
+}

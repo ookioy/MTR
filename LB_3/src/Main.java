@@ -1,8 +1,8 @@
 public class Main {
 
     private final static double CAPITAL_A = 50f;
-    private final static double CAPITAL_B1 = 0f;      // win
-    private final static double CAPITAL_B2 = 200f;    // lose
+    private final static double CAPITAL_B1 = 0f;      // lose
+    private final static double CAPITAL_B2 = 200f;    // win
 
     private final static double PROBABILITY_B1 = 0.5;
     private final static double PROBABILITY_B2 = 0.5;

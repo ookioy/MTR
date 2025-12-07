@@ -9,7 +9,6 @@ public class Main {
             {7.5, 1.5, 3.5},
             {8.5, 1.5, 4.0}
     };
-
     private static final int ROWS = PAY_OF_MATRIX.length;
     private static final int COLS = PAY_OF_MATRIX[0].length;
 
@@ -59,7 +58,7 @@ public class Main {
             System.out.printf("x%d: %.2f%n", (i + 1), maxRisks[i]);
         }
 
-        // 5. Обираємо мінімальний серед максимальних ризиків (Minimax)
+        // обираємо мінімальний серед максимальних ризиків (Minimax)
         double minMaxRisk = Double.POSITIVE_INFINITY;
         int bestVariantIndex = -1;
 
@@ -69,8 +68,7 @@ public class Main {
                 bestVariantIndex = i;
             }
         }
-
-        System.out.println("------------------------------------------------");
+        
         System.out.printf("Оптимальне рішення за критерієм Севіджа: x%d%n", (bestVariantIndex + 1));
         System.out.printf("Мінімальний ризик: %.2f%n", minMaxRisk);
     }
